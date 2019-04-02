@@ -59,6 +59,9 @@ namespace RuriLib.Models
         /// <summary>The type of proxy.</summary>
         public ProxyType Type { get; set; } = ProxyType.Http;
 
+        /// <summary>The anonmity of proxy </summary>
+        public string Anon { get; set; } = "";
+
         /// <summary>The country of the proxy's ip.</summary>
         public string Country { get; set; } = "";
 

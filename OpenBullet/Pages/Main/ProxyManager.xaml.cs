@@ -45,24 +45,25 @@ namespace OpenBullet
             vm.UpdateProperties();
         }
 
-        
+
         private void Check(object sender, DoWorkEventArgs e)
         {
             stop = false;
-            ThreadPool.SetMinThreads(vm.BotsNumber*2, vm.BotsNumber*2);
+            ThreadPool.SetMinThreads(vm.BotsNumber * 2, vm.BotsNumber * 2);
             Globals.LogInfo(Components.ProxyManager, "Set the minimum threads");
             //ThreadPool.SetMaxThreads(1000, 1000);
             Parallel.ForEach(vm.OnlyUntested ? vm.ProxyList.Where(p => p.Working == ProxyWorking.UNTESTED) : vm.ProxyList,
                 new ParallelOptions { MaxDegreeOfParallelism = vm.BotsNumber }, (proxy, state) =>
-            {
-                if (stop) { Globals.LogWarning(Components.ProxyManager, "Abort signal received, breaking the state"); state.Break(); }
-                CheckCountry(proxy);
-                CheckProxy(proxy);
-                App.Current.Dispatcher.Invoke(new Action(() => vm.UpdateProperties()));
-            });
+                {
+                    if (stop) { Globals.LogWarning(Components.ProxyManager, "Abort signal received, breaking the state"); state.Break(); }
+                    CheckAnon(proxy);
+                    CheckCountry(proxy);
+                    CheckProxy(proxy);
+                    App.Current.Dispatcher.Invoke(new Action(() => vm.UpdateProperties()));
+                });
         }
 
-        
+
         private void CheckCountry(CProxy proxy)
         {
             try
@@ -88,9 +89,40 @@ namespace OpenBullet
 
                     Globals.LogInfo(Components.ProxyManager, "Checked country for proxy '" + proxy.Proxy + "' with result '" + proxy.Country + "'");
                 }
-                
+
             }
-            catch (Exception ex) { Globals.LogError(Components.ProxyManager, "Failted to check country for proxy '" + proxy.Proxy + $"' - {ex.Message}"); }
+            catch (Exception ex) { Globals.LogError(Components.ProxyManager, "Failed to check country for proxy '" + proxy.Proxy + $"' - {ex.Message}"); }
+        }
+
+
+        private void CheckAnon(CProxy proxy)
+        {
+            try
+            {
+                using (var request = new HttpRequest())
+                {
+                    request.ConnectTimeout = (int)vm.Timeout;
+                    var response = request.Get("http://ip-api.com/csv/" + proxy.Host + "?fields=status,proxy");
+                    var csv = response.ToString();
+                    var split = csv.Split(',');
+
+                    var anon = "Unknown";
+
+                    if (split[0] == "success")
+                        anon = split[1];
+
+                    proxy.Anon = anon.Replace("\"", "");
+
+                    using (var db = new LiteDatabase(Globals.dataBaseFile))
+                    {
+                        db.GetCollection<CProxy>("proxies").Update(proxy);
+                    }
+
+                    Globals.LogInfo(Components.ProxyManager, "Checked anonimity for proxy '" + proxy.Proxy + "' with result '" + proxy.Anon + "'");
+
+                }
+            }
+            catch (Exception ex) { Globals.LogError(Components.ProxyManager, "Failed to check anonimity for proxy '" + proxy.Anon + $"' - {ex.Message}"); }
         }
 
         private void CheckProxy(CProxy proxy)
@@ -104,7 +136,7 @@ namespace OpenBullet
                     request.ConnectTimeout = (int)vm.Timeout;
                     var response = request.Get(vm.TestURL);
                     var source = response.ToString();
-                    
+
                     App.Current.Dispatcher.Invoke(new Action(() => proxy.Ping = (DateTime.Now - before).Milliseconds));
 
                     App.Current.Dispatcher.Invoke(new Action(() => proxy.Working = source.Contains(vm.SuccessKey) ? ProxyWorking.YES : ProxyWorking.NO));
@@ -124,7 +156,7 @@ namespace OpenBullet
             }
         }
 
-        
+
         private void CheckComplete(object sender, RunWorkerCompletedEventArgs e)
         {
             Globals.LogInfo(Components.ProxyManager, "Check completed, re-enabling the UI");
@@ -225,7 +257,7 @@ namespace OpenBullet
             vm.UpdateProperties();
         }
 
-        
+
         private void exportButton_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog sfd = new SaveFileDialog();
@@ -253,7 +285,7 @@ namespace OpenBullet
             }
         }
 
-        
+
         private void deleteButton_Click(object sender, RoutedEventArgs e)
         {
             Globals.LogInfo(Components.ProxyManager, $"Deleting {proxiesListView.SelectedItems.Count} proxies");
@@ -264,7 +296,7 @@ namespace OpenBullet
             Globals.LogInfo(Components.ProxyManager, "Proxies deleted successfully");
         }
 
-        
+
         private void DeleteProxies(List<CProxy> proxies)
         {
             Globals.LogInfo(Components.ProxyManager, "Deleting selected proxies");
@@ -282,7 +314,7 @@ namespace OpenBullet
             vm.UpdateProperties();
         }
 
-        
+
         private void deleteAllButton_Click(object sender, RoutedEventArgs e)
         {
             Globals.LogWarning(Components.ProxyManager, "Purging all proxies");
@@ -296,7 +328,7 @@ namespace OpenBullet
             vm.UpdateProperties();
         }
 
-        
+
         private void deleteNotWorkingButton_Click(object sender, RoutedEventArgs e)
         {
             Globals.LogInfo(Components.ProxyManager, "Deleting all non working proxies");
@@ -350,7 +382,7 @@ namespace OpenBullet
 
         private void ListViewItem_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            
+
         }
 
         private void deleteDuplicatesButton_Click(object sender, RoutedEventArgs e)

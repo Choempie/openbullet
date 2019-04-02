@@ -197,6 +197,11 @@
                             <GridViewColumnHeader Tag="Type" Click="listViewColumnHeader_Click">Chain</GridViewColumnHeader>
                         </GridViewColumn.Header>
                     </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Anon}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Tag="Anon" Click="listViewColumnHeader_Click">Anon</GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
