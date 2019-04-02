@@ -11,18 +11,25 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenBulletCLI", "OpenBullet
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		bugs_improve|Any CPU = bugs_improve|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{99E40E7F-00A4-4FB1-9441-B05A56C47C08}.bugs_improve|Any CPU.ActiveCfg = Debug|Any CPU
+		{99E40E7F-00A4-4FB1-9441-B05A56C47C08}.bugs_improve|Any CPU.Build.0 = Debug|Any CPU
 		{99E40E7F-00A4-4FB1-9441-B05A56C47C08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{99E40E7F-00A4-4FB1-9441-B05A56C47C08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99E40E7F-00A4-4FB1-9441-B05A56C47C08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99E40E7F-00A4-4FB1-9441-B05A56C47C08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17E95D0B-C1FD-445C-9FDF-244AF7299A67}.bugs_improve|Any CPU.ActiveCfg = Debug|Any CPU
+		{17E95D0B-C1FD-445C-9FDF-244AF7299A67}.bugs_improve|Any CPU.Build.0 = Debug|Any CPU
 		{17E95D0B-C1FD-445C-9FDF-244AF7299A67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{17E95D0B-C1FD-445C-9FDF-244AF7299A67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17E95D0B-C1FD-445C-9FDF-244AF7299A67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17E95D0B-C1FD-445C-9FDF-244AF7299A67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B6D8B01-861E-4CAF-B1C9-6670884381DB}.bugs_improve|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B6D8B01-861E-4CAF-B1C9-6670884381DB}.bugs_improve|Any CPU.Build.0 = Debug|Any CPU
 		{0B6D8B01-861E-4CAF-B1C9-6670884381DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0B6D8B01-861E-4CAF-B1C9-6670884381DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B6D8B01-861E-4CAF-B1C9-6670884381DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
